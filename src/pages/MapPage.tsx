@@ -23,7 +23,7 @@ const MapPage = () => {
         center={{...P0, zoom: 16}}>
         {markers.map(marker => (
           <Marker
-            key={marker.id}
+            key={marker.bike_id}
             coordinate={{longitude: marker.gps[0], latitude: marker.gps[1]}}
             width={60}
             height={60}

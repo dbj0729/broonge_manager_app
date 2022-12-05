@@ -1,13 +1,10 @@
 import {View, Text, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import tw from '../lib/tailwind';
 import {iotStatusStyle} from '../lib/iotStatus';
 
 const IotController = ({marker}: {marker: any}) => {
-  const [iotStatus, setIotStatus] = useState('stand_by');
-  const [battery, setBattery] = useState(80);
-
-  if (!marker) return;
+  if (!marker) return null;
   return (
     <View
       style={tw` absolute bottom-0 bg-white w-full rounded-tl-lg rounded-tr-lg`}>
@@ -55,7 +52,7 @@ const IotController = ({marker}: {marker: any}) => {
           </Pressable>
           <Pressable
             style={tw`flex-1 h-9 mx-1 items-center justify-center border rounded-md`}>
-            <Text>위치</Text>
+            <Text>정보</Text>
           </Pressable>
           <Pressable
             style={tw`flex-1 h-9 mx-1 items-center justify-center border rounded-md`}>
@@ -63,26 +60,18 @@ const IotController = ({marker}: {marker: any}) => {
           </Pressable>
         </View>
         <View style={tw`flex flex-1 flex-row mt-3`}>
-          <View style={tw`flex-1 `}>
-            <Pressable
-              style={tw`h-10 border rounded-md m-1 flex-1 items-center justify-center`}>
-              <Text>현장 고장조치</Text>
-            </Pressable>
-            <Pressable
-              style={tw`h-10 rounded-md m-1 flex-1 items-center justify-center  bg-red-400`}>
-              <Text style={tw`text-white`}>배터리 교체</Text>
-            </Pressable>
-          </View>
-          <View style={tw`flex-1 flex-row p-1`}>
-            <Pressable
-              style={tw`flex-1 border-2 rounded-md mx-1 items-center justify-center border-blue-500`}>
-              <Text style={tw`text-center`}>고장{'\n'}수거</Text>
-            </Pressable>
-            <Pressable
-              style={tw`flex-1 border-2 rounded-md mx-1 items-center justify-center border-purple-800`}>
-              <Text style={tw`text-center`}>재배치{'\n'}수거</Text>
-            </Pressable>
-          </View>
+          <Pressable
+            style={tw`flex-1 border-2 py-5 rounded-md mx-1 items-center justify-center border-blue-700`}>
+            <Text style={tw`text-center`}>수거</Text>
+          </Pressable>
+          <Pressable
+            style={tw`flex-1 border-2 py-5 rounded-md mx-1 items-center justify-center border-green-700`}>
+            <Text style={tw`text-center`}>현장{'\n'}조치</Text>
+          </Pressable>
+          <Pressable
+            style={tw`flex-2 border-2 py-5 rounded-md mx-1 items-center justify-center border-red-700`}>
+            <Text style={tw`text-center`}>배터리 교체</Text>
+          </Pressable>
         </View>
       </View>
     </View>
