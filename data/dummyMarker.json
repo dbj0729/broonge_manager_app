@@ -5,25 +5,29 @@
         "bike_id": "132456",
         "battery": 30,
         "gps": [126.56976549860512, 33.451310745639375],
-        "status": "stand_by"
+        "status": "stand_by",
+        "signal": 4
       },
       {
         "bike_id": "1316224",
         "battery": 16,
         "gps": [126.56895152804822, 33.45061368551521],
-        "status": "stand_by"
+        "status": "malfunction",
+        "signal": 5
       },
       {
         "bike_id": "46513203",
         "battery": 66,
         "gps": [126.57039588679523, 33.449978561026064],
-        "status": "report"
+        "status": "report",
+        "signal": 3
       },
       {
         "bike_id": "123165416",
         "battery": 90,
         "gps": [126.57059428109348, 33.45118739437701],
-        "status": "bike_error"
+        "status": "bike_error",
+        "signal": 1
       }
     ]
   }

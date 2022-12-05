@@ -1,9 +1,15 @@
 import {View, Text, Pressable} from 'react-native';
-import React from 'react';
+import React, {Dispatch, SetStateAction} from 'react';
 import tw from '../lib/tailwind';
 import {iotStatusStyle} from '../lib/iotStatus';
 
-const IotController = ({marker}: {marker: any}) => {
+const IotController = ({
+  marker,
+  setTargetMarker,
+}: {
+  marker: any;
+  setTargetMarker: Dispatch<SetStateAction<any>>;
+}) => {
   if (!marker) return null;
   return (
     <View
@@ -19,7 +25,34 @@ const IotController = ({marker}: {marker: any}) => {
               iotStatusStyle[marker.status].style
             }`}
           />
-          <Text style={tw`ml-1 text-sm`}>배터리</Text>
+          <Text style={tw`ml-1 text-sm`}>
+            {iotStatusStyle[marker.status].status}
+          </Text>
+          <View style={tw`w-8 py-1 flex flex-row items-end justify-center `}>
+            {marker.signal <= 1 ? (
+              <Text style={tw`text-xs`}>N/A</Text>
+            ) : (
+              <>
+                <View style={tw`w-1 h-1 bg-black rounded-[2px] mr-[1px]`} />
+                <View
+                  style={tw`w-1 h-2 ${
+                    marker.signal >= 3 ? 'bg-black' : 'bg-gray-300'
+                  } rounded-[2px] mr-[1px]`}
+                />
+                <View
+                  style={tw`w-1 h-3 ${
+                    marker.signal >= 4 ? 'bg-black' : 'bg-gray-300'
+                  } rounded-[2px] mr-[1px]`}
+                />
+                <View
+                  style={tw`w-1 h-4 ${
+                    marker.signal >= 5 ? 'bg-black' : 'bg-gray-300'
+                  } rounded-[2px] mr-[1px]`}
+                />
+              </>
+            )}
+            {/* <View style={tw`w-1 h-5 bg-black mr-[2px]`} /> */}
+          </View>
           <View style={tw`ml-3`}>
             <Text
               style={tw`${
@@ -38,6 +71,15 @@ const IotController = ({marker}: {marker: any}) => {
               />
             </View>
           </View>
+
+          <Pressable
+            hitSlop={4}
+            onPress={() => {
+              setTargetMarker(undefined);
+            }}
+            style={tw`ml-4`}>
+            <Text style={tw`text-base font-bold`}>X</Text>
+          </Pressable>
         </View>
       </View>
       <View style={tw`px-5 py-2`}>

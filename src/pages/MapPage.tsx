@@ -1,22 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import {Image, View} from 'react-native';
+import {Image, Pressable, Text, View} from 'react-native';
 import NaverMapView, {Marker} from 'react-native-nmap';
 import IotController from '../components/IotController';
 import tw from '../lib/tailwind';
 import dummyMarker from '../../data/dummyMarker.json';
 import {iotStatusStyle} from '../lib/iotStatus';
+import {AppStackProps} from '../types/navigation';
+import {TextInput} from 'react-native-gesture-handler';
 
-const MapPage = () => {
+const MapPage = ({navigation}: AppStackProps<'Map'>) => {
   const P0 = {latitude: 33.45061368551521, longitude: 126.56895152804822};
   const [markers, setMarkers] = useState<any[]>([]);
   const [targetMarker, setTargetMarker] = useState(undefined);
+  const [filterMode, setFilterMode] = useState(false);
 
   useEffect(() => {
     setMarkers(dummyMarker.data.bike);
   }, []);
 
+  const goBack = () => {
+    navigation.goBack();
+  };
+
+  const toggleFilter = () => {};
+
   return (
-    <View style={tw`relative w-full h-full bg-red-100`}>
+    <View style={tw`relative w-full h-full`}>
+      <View style={tw`flex flex-row p-4 justify-between items-center`}>
+        <Pressable onPress={goBack} hitSlop={4} style={tw``}>
+          <Image source={require('../assets/home.png')} />
+        </Pressable>
+        <TextInput
+          style={tw`border border-gray-500 h-10 py-0 w-[70%] rounded-md`}
+          placeholder="번호입력"
+        />
+        <Pressable hitSlop={4} style={tw``}>
+          <Image source={require('../assets/bike_filter_icon.png')} />
+        </Pressable>
+      </View>
+      {filterMode && (
+        <View style={tw`absolute top-20 bg-red-500 z-10`}>
+          <Text>필터 모드</Text>
+        </View>
+      )}
       <NaverMapView
         style={tw`flex-1`}
         showsMyLocationButton={true}
@@ -45,7 +71,7 @@ const MapPage = () => {
           </Marker>
         ))}
       </NaverMapView>
-      <IotController marker={targetMarker} />
+      <IotController setTargetMarker={setTargetMarker} marker={targetMarker} />
     </View>
   );
 };

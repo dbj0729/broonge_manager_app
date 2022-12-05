@@ -1,5 +1,4 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
 import MapPage from './pages/MapPage';
 import {useDeviceContext} from 'twrnc';
 import tw from './lib/tailwind';

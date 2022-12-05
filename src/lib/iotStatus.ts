@@ -7,10 +7,30 @@ import directed from '../assets/directed.png';
 import report from '../assets/reported.png';
 
 export const iotStatusStyle: any = {
-  [IotStatus.STAND_BY]: {style: 'bg-green-400', marker: standBy},
-  [IotStatus.BIKE_ERROR]: {style: 'bg-orange-400', marker: bike_error},
-  [IotStatus.DIRECTED]: {style: 'bg-purple-600', marker: directed},
-  [IotStatus.REPORT]: {style: 'bg-yellow-300', marker: report},
-  [IotStatus.RANGEOUT]: {style: 'bg-gray-300', marker: rangeout},
-  [IotStatus.MALFUNCTION]: {style: 'bg-blue-400', marker: malfuntion},
+  [IotStatus.STAND_BY]: {
+    style: 'bg-green-500',
+    status: '대기',
+    marker: standBy,
+  },
+  [IotStatus.BIKE_ERROR]: {
+    style: 'bg-orange-400',
+    status: '에러',
+    marker: bike_error,
+  },
+  [IotStatus.DIRECTED]: {
+    style: 'bg-purple-600',
+    status: '지시',
+    marker: directed,
+  },
+  [IotStatus.REPORT]: {style: 'bg-yellow-300', status: '신고', marker: report},
+  [IotStatus.RANGEOUT]: {
+    style: 'bg-gray-300',
+    status: '이탈',
+    marker: rangeout,
+  },
+  [IotStatus.MALFUNCTION]: {
+    style: 'bg-red-400',
+    status: '고장',
+    marker: malfuntion,
+  },
 };
