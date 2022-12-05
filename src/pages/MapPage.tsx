@@ -12,7 +12,6 @@ const MapPage = ({navigation}: AppStackProps<'Map'>) => {
   const P0 = {latitude: 33.45061368551521, longitude: 126.56895152804822};
   const [markers, setMarkers] = useState<any[]>([]);
   const [targetMarker, setTargetMarker] = useState(undefined);
-  const [filterMode, setFilterMode] = useState(false);
 
   useEffect(() => {
     setMarkers(dummyMarker.data.bike);
@@ -21,8 +20,6 @@ const MapPage = ({navigation}: AppStackProps<'Map'>) => {
   const goBack = () => {
     navigation.goBack();
   };
-
-  const toggleFilter = () => {};
 
   return (
     <View style={tw`relative w-full h-full`}>
@@ -38,11 +35,7 @@ const MapPage = ({navigation}: AppStackProps<'Map'>) => {
           <Image source={require('../assets/bike_filter_icon.png')} />
         </Pressable>
       </View>
-      {filterMode && (
-        <View style={tw`absolute top-20 bg-red-500 z-10`}>
-          <Text>필터 모드</Text>
-        </View>
-      )}
+
       <NaverMapView
         style={tw`flex-1`}
         showsMyLocationButton={true}

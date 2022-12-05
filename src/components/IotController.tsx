@@ -85,33 +85,33 @@ const IotController = ({
       <View style={tw`px-5 py-2`}>
         <View style={tw`flex-1 flex-row items-center`}>
           <Pressable
-            style={tw`flex-1 h-9 mx-1 items-center justify-center border rounded-md`}>
+            style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             <Text>해제</Text>
           </Pressable>
           <Pressable
-            style={tw`flex-1 h-9 mx-1 items-center justify-center border rounded-md`}>
+            style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             <Text>찾기</Text>
           </Pressable>
           <Pressable
-            style={tw`flex-1 h-9 mx-1 items-center justify-center border rounded-md`}>
+            style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             <Text>정보</Text>
           </Pressable>
           <Pressable
-            style={tw`flex-1 h-9 mx-1 items-center justify-center border rounded-md`}>
+            style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             <Text>신고</Text>
           </Pressable>
         </View>
         <View style={tw`flex flex-1 flex-row mt-3`}>
           <Pressable
-            style={tw`flex-1 border-2 py-5 rounded-md mx-1 items-center justify-center border-blue-700`}>
+            style={tw`flex-1 border-2 py-5 rounded-md mx-1 items-center justify-center border-blue-800`}>
             <Text style={tw`text-center`}>수거</Text>
           </Pressable>
           <Pressable
-            style={tw`flex-1 border-2 py-5 rounded-md mx-1 items-center justify-center border-green-700`}>
+            style={tw`flex-1 border-2 py-5 rounded-md mx-1 items-center justify-center border-green-600`}>
             <Text style={tw`text-center`}>현장{'\n'}조치</Text>
           </Pressable>
           <Pressable
-            style={tw`flex-2 border-2 py-5 rounded-md mx-1 items-center justify-center border-red-700`}>
+            style={tw`flex-2 border-2 py-5 rounded-md mx-1 items-center justify-center border-red-500`}>
             <Text style={tw`text-center`}>배터리 교체</Text>
           </Pressable>
         </View>

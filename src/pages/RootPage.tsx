@@ -103,7 +103,7 @@ const RootPage = ({navigation}: AppStackProps<'Root'>) => {
             <Text
               style={tw`${serviceStatus ? 'text-red-500' : 'text-green-400'}`}>
               {serviceStatus ? '종료' : '시작'}
-            </Text>{' '}
+            </Text>
             하시겠습니까?
           </Text>
         </View>
