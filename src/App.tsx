@@ -1,16 +1,19 @@
-import React from 'react';
-import MapPage from './pages/MapPage';
-import {useDeviceContext} from 'twrnc';
-import tw from './lib/tailwind';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import RootPage from './pages/RootPage';
-import {AppStackParamList} from './types/navigation';
+import React, { useLayoutEffect } from 'react'
+import MapPage from './pages/MapPage'
+import { useDeviceContext } from 'twrnc'
+import tw from './lib/tailwind'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import RootPage from './pages/RootPage'
+import { AppStackParamList } from './types/navigation'
+import Orientation from 'react-native-orientation-locker'
 
-const Stack = createStackNavigator<AppStackParamList>();
+const Stack = createStackNavigator<AppStackParamList>()
 
 const App = () => {
-  useDeviceContext(tw);
+  useDeviceContext(tw)
+  useLayoutEffect(() => Orientation.lockToPortrait(), [])
+
   return (
     // <SafeAreaView>
     //   <MapPage />
@@ -20,26 +23,18 @@ const App = () => {
         <Stack.Navigator
           screenOptions={{
             headerShadowVisible: false,
-            headerTitleStyle: {fontSize: 20, fontWeight: 'bold'},
-            headerStyle: {backgroundColor: '#FAF5ED'},
+            headerTitleStyle: { fontSize: 20, fontWeight: 'bold' },
+            headerStyle: { backgroundColor: '#FAF5ED' },
             headerTitleAlign: 'center',
           }}>
           <Stack.Group>
-            <Stack.Screen
-              name="Root"
-              component={RootPage}
-              options={{headerShown: false}}
-            />
-            <Stack.Screen
-              name="Map"
-              component={MapPage}
-              options={{headerShown: false}}
-            />
+            <Stack.Screen name="Root" component={RootPage} options={{ headerShown: false }} />
+            <Stack.Screen name="Map" component={MapPage} options={{ headerShown: false }} />
           </Stack.Group>
         </Stack.Navigator>
       </NavigationContainer>
     </>
-  );
-};
+  )
+}
 
-export default App;
+export default App
