@@ -1,4 +1,4 @@
-package com.broonge_manager_app;
+package com.broonge.manager;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

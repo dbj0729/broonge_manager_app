@@ -1,4 +1,4 @@
-package com.broonge_manager_app.newarchitecture.components;
+package com.broonge.manager.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

@@ -1,4 +1,4 @@
-package com.broonge_manager_app.newarchitecture.modules;
+package com.broonge.manager.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;

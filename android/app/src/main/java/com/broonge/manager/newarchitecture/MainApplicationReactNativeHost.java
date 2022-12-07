@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.broonge_manager_app.BuildConfig;
-import com.broonge_manager_app.newarchitecture.components.MainComponentsRegistry;
-import com.broonge_manager_app.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.broonge.manager.BuildConfig;
+import com.broonge.manager.newarchitecture.components.MainComponentsRegistry;
+import com.broonge.manager.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
