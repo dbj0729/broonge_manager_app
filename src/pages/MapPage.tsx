@@ -8,6 +8,7 @@ import { iotStatusStyle } from '../lib/iotStatus'
 import { AppStackProps } from '../types/navigation'
 import { TextInput } from 'react-native-gesture-handler'
 import axios from 'axios'
+import useCurrentLocation from '../hooks/useCurrentLocation'
 interface OnCameraChangedEvent {
   latitude: number
   longitude: number
@@ -16,7 +17,7 @@ interface OnCameraChangedEvent {
   coveringRegion: [Coord, Coord, Coord, Coord, Coord]
 }
 
-interface Coord {
+export interface Coord {
   latitude: number
   longitude: number
 }
@@ -25,10 +26,10 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
   const P0 = { latitude: 33.45061368551521, longitude: 126.56895152804822 }
   const [markers, setMarkers] = useState<any[]>([])
   const [targetMarker, setTargetMarker] = useState(undefined)
+  const currentLocation = useCurrentLocation()
 
   const handleCameraChanged = useCallback(async (e: OnCameraChangedEvent) => {
     try {
-      console.log(axios.defaults.baseURL)
       const res = await axios.post('/tutorial/map', { region: e.coveringRegion })
       console.log(res.data)
     } catch (error) {
@@ -61,7 +62,7 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
         style={tw`flex-1`}
         onCameraChange={handleCameraChanged}
         showsMyLocationButton={true}
-        center={{ ...P0, zoom: 16 }}>
+        center={{ ...currentLocation, zoom: 16 }}>
         {markers.map(marker => (
           <Marker
             key={marker.bike_id}

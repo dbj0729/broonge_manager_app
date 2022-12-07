@@ -130,12 +130,16 @@ def reactNativeArchitectures() {
 }
 
 android {
+    lintOptions {
+        abortOnError false
+    }
+    
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.broonge_manager_app"
+        applicationId "com.broonge.manager"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

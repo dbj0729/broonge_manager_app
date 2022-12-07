@@ -2,6 +2,8 @@
   package="com.broonge.manager">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
       android:name=".MainApplication"
@@ -12,7 +14,7 @@
       android:theme="@style/AppTheme">
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
-            android:value="ufxfy19zbg" />
+            android:value="slf8nknbc4" />
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

@@ -1,4 +1,4 @@
-package com.broonge_manager_app.newarchitecture;
+package com.broonge.manager.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;

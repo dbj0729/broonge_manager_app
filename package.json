@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.17.11",
+    "@react-native-community/geolocation": "^3.0.4",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/stack": "^6.3.7",
     "@reduxjs/toolkit": "^1.9.1",
@@ -30,7 +31,6 @@
     "react-native-tcp-socket": "^6.0.3",
     "react-native-telnet-client": "^1.0.6",
     "react-redux": "^8.0.5",
-    "redux-flipper": "^2.0.2",
     "rn-async-storage-flipper": "^0.0.10",
     "twrnc": "^3.4.1"
   },
