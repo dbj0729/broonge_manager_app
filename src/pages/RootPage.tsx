@@ -1,41 +1,41 @@
-import {View, Text, Pressable, Image, Alert} from 'react-native';
-import React, {useState} from 'react';
-import {AppStackProps} from '../types/navigation';
-import tw from '../lib/tailwind';
-import LinearGradient from 'react-native-linear-gradient';
-import ConfirmModal from '../components/ConfirmModal';
+import { View, Text, Pressable, Image, Alert } from 'react-native'
+import React, { useState } from 'react'
+import { AppStackProps } from '../types/navigation'
+import tw from '../lib/tailwind'
+import LinearGradient from 'react-native-linear-gradient'
+import ConfirmModal from '../components/ConfirmModal'
 
-const RootPage = ({navigation}: AppStackProps<'Root'>) => {
+const RootPage = ({ navigation }: AppStackProps<'Root'>) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: '부릉이',
       headerLeft: () => undefined,
-    });
-  }, [navigation]);
+    })
+  }, [navigation])
 
-  const [serviceStatus, setServiceStatus] = useState(true);
-  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [serviceStatus, setServiceStatus] = useState(true)
+  const [isOpenModal, setIsOpenModal] = useState(false)
 
   const toggleServerStatus = () => {
-    setServiceStatus(p => !p);
-    setIsOpenModal(false);
-  };
+    setServiceStatus(p => !p)
+    setIsOpenModal(false)
+  }
 
   const toggleModal = () => {
-    setIsOpenModal(p => !p);
-  };
+    setIsOpenModal(p => !p)
+  }
 
   const gotoMap = () => {
-    navigation.navigate('Map');
-  };
+    navigation.navigate('Map')
+  }
   return (
     <View style={tw`flex-1 `}>
       <View style={tw`py-4 items-center`}>
         <Image source={require('../assets/logo.png')} />
       </View>
       <LinearGradient
-        start={{x: 0.0, y: 0.25}}
-        end={{x: 0.5, y: 1.1}}
+        start={{ x: 0.0, y: 0.25 }}
+        end={{ x: 0.5, y: 1.1 }}
         colors={serviceStatus ? ['#00A867', '#103930'] : ['#3F434A', '#94979D']}
         style={tw`h-30 flex flex-row items-center justify-between px-5`}>
         <View>
@@ -48,17 +48,11 @@ const RootPage = ({navigation}: AppStackProps<'Root'>) => {
               }
             />
           </Pressable>
-          <Text style={tw`text-white text-xs mt-2`}>
-            서비스 {serviceStatus ? '중' : '종료'}
-          </Text>
+          <Text style={tw`text-white text-xs mt-2`}>서비스 {serviceStatus ? '중' : '종료'}</Text>
         </View>
         <View>
-          <Text style={tw`text-xl text-right text-white font-bold`}>
-            오늘 수익
-          </Text>
-          <Text style={tw`text-2xl text-right text-green-500 font-bold`}>
-            578,500원
-          </Text>
+          <Text style={tw`text-xl text-right text-white font-bold`}>오늘 수익</Text>
+          <Text style={tw`text-2xl text-right text-green-500 font-bold`}>578,500원</Text>
         </View>
       </LinearGradient>
       <View style={tw`px-4 mt-8`}>
@@ -100,8 +94,7 @@ const RootPage = ({navigation}: AppStackProps<'Root'>) => {
         <View style={tw`items-center`}>
           <Text style={tw`text-base font-bold text-black`}>
             서비스를{' '}
-            <Text
-              style={tw`${serviceStatus ? 'text-red-500' : 'text-green-400'}`}>
+            <Text style={tw`${serviceStatus ? 'text-red-500' : 'text-green-400'}`}>
               {serviceStatus ? '종료' : '시작'}
             </Text>
             하시겠습니까?
@@ -109,7 +102,7 @@ const RootPage = ({navigation}: AppStackProps<'Root'>) => {
         </View>
       </ConfirmModal>
     </View>
-  );
-};
+  )
+}
 
-export default RootPage;
+export default RootPage

@@ -11,12 +11,16 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-navigation/native": "^6.0.16",
     "@react-navigation/stack": "^6.3.7",
+    "@reduxjs/toolkit": "^1.9.1",
+    "axios": "^1.2.1",
     "patch-package": "^6.5.0",
     "postinstall-postinstall": "^2.1.0",
     "react": "18.1.0",
     "react-native": "0.70.6",
+    "react-native-flipper": "^0.176.0",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-nmap": "^0.0.66",
@@ -25,6 +29,9 @@
     "react-native-screens": "^3.18.2",
     "react-native-tcp-socket": "^6.0.3",
     "react-native-telnet-client": "^1.0.6",
+    "react-redux": "^8.0.5",
+    "redux-flipper": "^2.0.2",
+    "rn-async-storage-flipper": "^0.0.10",
     "twrnc": "^3.4.1"
   },
   "devDependencies": {
@@ -32,6 +39,7 @@
     "@babel/runtime": "^7.12.5",
     "@react-native-community/eslint-config": "^2.0.0",
     "@tsconfig/react-native": "^2.0.2",
+    "@types/axios": "^0.14.0",
     "@types/jest": "^26.0.23",
     "@types/react": "^18.0.21",
     "@types/react-native": "^0.70.6",

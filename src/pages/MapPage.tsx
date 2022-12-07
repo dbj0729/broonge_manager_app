@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Image, Pressable, View } from 'react-native'
 import NaverMapView, { Marker } from 'react-native-nmap'
 import IotController from '../components/IotController'
@@ -7,11 +7,34 @@ import dummyMarker from '../../data/dummyMarker.json'
 import { iotStatusStyle } from '../lib/iotStatus'
 import { AppStackProps } from '../types/navigation'
 import { TextInput } from 'react-native-gesture-handler'
+import axios from 'axios'
+interface OnCameraChangedEvent {
+  latitude: number
+  longitude: number
+  zoom: number
+  contentsRegion: [Coord, Coord, Coord, Coord, Coord]
+  coveringRegion: [Coord, Coord, Coord, Coord, Coord]
+}
+
+interface Coord {
+  latitude: number
+  longitude: number
+}
 
 const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
   const P0 = { latitude: 33.45061368551521, longitude: 126.56895152804822 }
   const [markers, setMarkers] = useState<any[]>([])
   const [targetMarker, setTargetMarker] = useState(undefined)
+
+  const handleCameraChanged = useCallback(async (e: OnCameraChangedEvent) => {
+    try {
+      console.log(axios.defaults.baseURL)
+      const res = await axios.post('/tutorial/map', { region: e.coveringRegion })
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
 
   useEffect(() => {
     setMarkers(dummyMarker.data.bike)
@@ -34,7 +57,11 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
         </Pressable>
       </View>
 
-      <NaverMapView style={tw`flex-1`} showsMyLocationButton={true} center={{ ...P0, zoom: 16 }}>
+      <NaverMapView
+        style={tw`flex-1`}
+        onCameraChange={handleCameraChanged}
+        showsMyLocationButton={true}
+        center={{ ...P0, zoom: 16 }}>
         {markers.map(marker => (
           <Marker
             key={marker.bike_id}
