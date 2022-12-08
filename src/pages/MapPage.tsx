@@ -1,14 +1,14 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { Image, Pressable, View } from 'react-native'
-import NaverMapView, { Marker } from 'react-native-nmap'
+import NaverMapView from 'react-native-nmap'
 import IotController from '../components/IotController'
 import tw from '../lib/tailwind'
-import dummyMarker from '../../data/dummyMarker.json'
-import { iotStatusStyle } from '../lib/iotStatus'
 import { AppStackProps } from '../types/navigation'
 import { TextInput } from 'react-native-gesture-handler'
 import axios from 'axios'
 import useCurrentLocation from '../hooks/useCurrentLocation'
+import MarkersComponent from '../components/MarkersComponent'
+import { Iot } from '../types/iotStatus'
 interface OnCameraChangedEvent {
   latitude: number
   longitude: number
@@ -23,22 +23,18 @@ export interface Coord {
 }
 
 const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
-  const P0 = { latitude: 33.45061368551521, longitude: 126.56895152804822 }
-  const [markers, setMarkers] = useState<any[]>([])
-  const [targetMarker, setTargetMarker] = useState(undefined)
+  const mapRef = useRef(null)
+  const [markers, setMarkers] = useState<Iot[]>([])
+  const [targetMarker, setTargetMarker] = useState<Iot>()
   const currentLocation = useCurrentLocation()
 
   const handleCameraChanged = useCallback(async (e: OnCameraChangedEvent) => {
     try {
-      const res = await axios.post('/tutorial/map', { region: e.coveringRegion })
-      console.log(res.data)
+      const res = await axios.post<{ result: Iot[] }>('/iot/map', { region: e.coveringRegion })
+      setMarkers(res.data.result)
     } catch (error) {
       console.log(error)
     }
-  }, [])
-
-  useEffect(() => {
-    setMarkers(dummyMarker.data.bike)
   }, [])
 
   const goBack = () => navigation.goBack()
@@ -59,30 +55,12 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
       </View>
 
       <NaverMapView
+        ref={mapRef}
         style={tw`flex-1`}
         onCameraChange={handleCameraChanged}
         showsMyLocationButton={true}
         center={{ ...currentLocation, zoom: 16 }}>
-        {markers.map(marker => (
-          <Marker
-            key={marker.bike_id}
-            coordinate={{ longitude: marker.gps[0], latitude: marker.gps[1] }}
-            width={60}
-            height={60}
-            // image={require('../assets/reported.png')}
-            onClick={() => setTargetMarker(marker)}>
-            <View style={tw`relative`}>
-              <Image
-                style={tw`w-10`}
-                // source={require('../assets/stand_by.png')}
-                source={iotStatusStyle[marker?.status]?.marker}
-              />
-              <View style={tw`absolute top-2 left-2 w-6 border p-[1px] rounded-md`}>
-                <View style={tw`bg-black h-1 w-[${marker.battery}%]  rounded-md`} />
-              </View>
-            </View>
-          </Marker>
-        ))}
+        <MarkersComponent markers={markers} setTargetMarker={setTargetMarker} />
       </NaverMapView>
       <IotController setTargetMarker={setTargetMarker} marker={targetMarker} />
     </View>

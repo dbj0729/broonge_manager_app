@@ -1,39 +1,36 @@
 import { View, Text, Pressable, ActivityIndicator } from 'react-native'
-import React, { Dispatch, SetStateAction, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import tw from '../lib/tailwind'
 import { iotStatusStyle } from '../lib/iotStatus'
 import Telnet from 'react-native-telnet-client'
+import { Iot } from '../types/iotStatus'
 
 const IotController = ({
   marker,
   setTargetMarker,
 }: {
-  marker: any
-  setTargetMarker: Dispatch<SetStateAction<any>>
+  marker: Iot | undefined
+  setTargetMarker: Dispatch<SetStateAction<Iot | undefined>>
 }) => {
-  const [unLockLoading, setUnlockLoading] = useState(false)
-  const [pageLoading, setPageLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [count, setCount] = useState(10)
 
   const updateBikeStatus = async (order: string) => {
-    if (order === 'unlock') setUnlockLoading(true)
-    if (order === 'page') setPageLoading(true)
+    setLoading(true)
 
     const connection = new Telnet()
 
     const params = {
-      // host: '192.168.0.57',
-      host: 'broonge.co.kr',
+      host: '192.168.0.57',
+      // host: 'broonge.co.kr',
       port: 9090,
       negotiationMandatory: false,
-      timeout: 10000,
     }
 
     try {
       await connection.connect(params)
     } catch (error) {
       console.log('timeout?')
-      setUnlockLoading(false)
-      setPageLoading(false)
       return
     }
 
@@ -41,9 +38,21 @@ const IotController = ({
     console.log(res)
 
     await connection.end()
-    if (order === 'unlock') setUnlockLoading(false)
-    if (order === 'page') setPageLoading(false)
   }
+
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => {
+        if (count > 0) {
+          setCount(pre => pre - 1)
+        } else if (count <= 0) {
+          setCount(10)
+          setLoading(false)
+        }
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [count, loading])
 
   if (!marker) return null
 
@@ -58,24 +67,24 @@ const IotController = ({
           <View style={tw`w-4 h-4 rounded-full ${iotStatusStyle[marker.status].style}`} />
           <Text style={tw`ml-1 text-sm`}>{iotStatusStyle[marker.status].status}</Text>
           <View style={tw`w-8 py-1 flex flex-row items-end justify-center `}>
-            {marker.signal <= 1 ? (
+            {Number(marker.signal_strength) <= 1 ? (
               <Text style={tw`text-xs`}>N/A</Text>
             ) : (
               <>
                 <View style={tw`w-1 h-1 bg-black rounded-[2px] mr-[1px]`} />
                 <View
                   style={tw`w-1 h-2 ${
-                    marker.signal >= 3 ? 'bg-black' : 'bg-gray-300'
+                    Number(marker.signal_strength) >= 3 ? 'bg-black' : 'bg-gray-300'
                   } rounded-[2px] mr-[1px]`}
                 />
                 <View
                   style={tw`w-1 h-3 ${
-                    marker.signal >= 4 ? 'bg-black' : 'bg-gray-300'
+                    Number(marker.signal_strength) >= 4 ? 'bg-black' : 'bg-gray-300'
                   } rounded-[2px] mr-[1px]`}
                 />
                 <View
                   style={tw`w-1 h-4 ${
-                    marker.signal >= 5 ? 'bg-black' : 'bg-gray-300'
+                    Number(marker.signal_strength) >= 5 ? 'bg-black' : 'bg-gray-300'
                   } rounded-[2px] mr-[1px]`}
                 />
               </>
@@ -83,15 +92,16 @@ const IotController = ({
             {/* <View style={tw`w-1 h-5 bg-black mr-[2px]`} /> */}
           </View>
           <View style={tw`ml-3`}>
-            <Text style={tw`${marker.battery <= 20 ? 'text-red-400' : ''} text-xs text-center`}>
-              {marker.battery}%
+            <Text
+              style={tw`${Number(marker.battery) <= 20 ? 'text-red-400' : ''} text-xs text-center`}>
+              {Number(marker.battery)}%
             </Text>
             <View
               style={tw`${
-                marker.battery <= 20 ? 'border-red-400' : ''
+                Number(marker.battery) <= 20 ? 'border-red-400' : ''
               } w-8 border p-[1px] rounded-md`}>
               <View
-                style={tw`${marker.battery <= 20 ? 'bg-red-400' : 'bg-black'} h-1 w-[${
+                style={tw`${Number(marker.battery) <= 20 ? 'bg-red-400' : 'bg-black'} h-1 w-[${
                   marker.battery
                 }%]  rounded-md`}
               />
@@ -112,19 +122,24 @@ const IotController = ({
         <View style={tw`flex-1 flex-row items-center`}>
           <Pressable
             onPress={() => updateBikeStatus('unlock')}
+            disabled={loading}
             style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
-            {!unLockLoading && <Text>해제</Text>}
-            {unLockLoading && <ActivityIndicator animating={unLockLoading} color="#222" />}
+            {!loading && <Text>해제</Text>}
+            {/* {unLockLoading && <ActivityIndicator animating={unLockLoading} color="#222" />} */}
+            {loading && <Text style={tw``}>{count}</Text>}
           </Pressable>
+
           <Pressable
             onPress={() => updateBikeStatus('page')}
             style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
-            {!pageLoading && <Text>찾기</Text>}
-            {pageLoading && <ActivityIndicator animating={pageLoading} color="#222" />}
+            {!loading && <Text>찾기</Text>}
+            {loading && <Text style={tw``}>{count}</Text>}
           </Pressable>
+
           <Pressable style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             <Text>정보</Text>
           </Pressable>
+
           <Pressable style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             <Text>신고</Text>
           </Pressable>

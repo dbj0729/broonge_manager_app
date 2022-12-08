@@ -1,10 +1,10 @@
-import {IotStatus} from '../types/iotStatus';
-import standBy from '../assets/stand_by.png';
-import malfuntion from '../assets/malfuntion.png';
-import bike_error from '../assets/bike_error.png';
-import rangeout from '../assets/range_out.png';
-import directed from '../assets/directed.png';
-import report from '../assets/reported.png';
+import { IotStatus } from '../types/iotStatus'
+import standBy from '../assets/stand_by.png'
+import malfuntion from '../assets/malfuntion.png'
+import bike_error from '../assets/bike_error.png'
+import rangeout from '../assets/range_out.png'
+import directed from '../assets/directed.png'
+import report from '../assets/reported.png'
 
 export const iotStatusStyle: any = {
   [IotStatus.STAND_BY]: {
@@ -22,7 +22,7 @@ export const iotStatusStyle: any = {
     status: '지시',
     marker: directed,
   },
-  [IotStatus.REPORT]: {style: 'bg-yellow-300', status: '신고', marker: report},
+  [IotStatus.REPORT]: { style: 'bg-yellow-300', status: '신고', marker: report },
   [IotStatus.RANGEOUT]: {
     style: 'bg-gray-300',
     status: '이탈',
@@ -33,4 +33,4 @@ export const iotStatusStyle: any = {
     status: '고장',
     marker: malfuntion,
   },
-};
+}
