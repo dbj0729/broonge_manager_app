@@ -16,6 +16,7 @@ export interface Iot {
   led: string
   status: string
   point: Point
+  is_locked: string
 }
 
 export interface Point {

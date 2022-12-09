@@ -1,9 +1,10 @@
-import { View, Text, Pressable, ActivityIndicator } from 'react-native'
+import { View, Text, Pressable } from 'react-native'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import tw from '../lib/tailwind'
 import { iotStatusStyle } from '../lib/iotStatus'
 import Telnet from 'react-native-telnet-client'
 import { Iot } from '../types/iotStatus'
+import axios from 'axios'
 
 const IotController = ({
   marker,
@@ -13,16 +14,20 @@ const IotController = ({
   setTargetMarker: Dispatch<SetStateAction<Iot | undefined>>
 }) => {
   const [loading, setLoading] = useState(false)
+  const [isPressLockBtn, setIsPressLockBtn] = useState(false)
+  const [isLocked, setIsLocked] = useState('')
   const [count, setCount] = useState(10)
 
   const updateBikeStatus = async (order: string) => {
     setLoading(true)
 
+    if (order === 'unlock') setIsPressLockBtn(true)
+
     const connection = new Telnet()
 
     const params = {
-      host: '192.168.0.57',
-      // host: 'broonge.co.kr',
+      // host: '192.168.0.57',
+      host: 'broonge.co.kr',
       port: 9090,
       negotiationMandatory: false,
     }
@@ -41,18 +46,32 @@ const IotController = ({
   }
 
   useEffect(() => {
+    const checkIsLocked = async () => {
+      try {
+        const res = await axios.get<Iot>(`/iot/lock/${marker?.bike_id}`)
+        setIsLocked(res.data.is_locked)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
     if (loading) {
       const timer = setTimeout(() => {
         if (count > 0) {
           setCount(pre => pre - 1)
-        } else if (count <= 0) {
+        } else if (count <= 0 && isPressLockBtn) {
+          checkIsLocked()
+        }
+
+        if (count <= 0) {
           setCount(10)
           setLoading(false)
+          setIsPressLockBtn(false)
         }
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, [count, loading])
+  }, [count, isPressLockBtn, loading, marker?.bike_id])
 
   if (!marker) return null
 
@@ -124,12 +143,13 @@ const IotController = ({
             onPress={() => updateBikeStatus('unlock')}
             disabled={loading}
             style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
-            {!loading && <Text>해제</Text>}
+            {!loading && <Text>{isLocked === 'NO' ? '해제완료' : '해제'}</Text>}
             {/* {unLockLoading && <ActivityIndicator animating={unLockLoading} color="#222" />} */}
             {loading && <Text style={tw``}>{count}</Text>}
           </Pressable>
 
           <Pressable
+            disabled={loading}
             onPress={() => updateBikeStatus('page')}
             style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
             {!loading && <Text>찾기</Text>}

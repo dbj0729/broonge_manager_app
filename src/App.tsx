@@ -9,7 +9,8 @@ import { AppStackParamList } from './types/navigation'
 import Orientation from 'react-native-orientation-locker'
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://192.168.0.57:4007'
+// axios.defaults.baseURL = 'http://192.168.0.57:4007'
+axios.defaults.baseURL = 'https://broonge.co.kr'
 
 const Stack = createStackNavigator<AppStackParamList>()
 
