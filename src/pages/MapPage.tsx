@@ -31,7 +31,7 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
   const handleCameraChanged = useCallback(async (e: OnCameraChangedEvent) => {
     try {
       const res = await axios.post<{ result: Iot[] }>('/iot/map', { region: e.coveringRegion })
-      setMarkers(res.data.result)
+      setMarkers(res.data.result.filter(i => i.status !== 'in-use'))
     } catch (error) {
       console.log(error)
     }

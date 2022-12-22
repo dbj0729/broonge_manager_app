@@ -39,7 +39,7 @@ const IotController = ({
       return
     }
 
-    const res = await connection.send(`a001,1241212319,${order}`)
+    const res = await connection.send(`a001,${marker?.bike_id},${order}`)
     console.log(res)
 
     await connection.end()
@@ -80,7 +80,7 @@ const IotController = ({
       <View
         style={tw`px-5 py-2 flex-1 flex flex-row justify-between items-center border-b border-b-gray-300`}>
         <View style={tw``}>
-          <Text>{marker.bike_id}(세종)</Text>
+          <Text>{marker.bike_id}</Text>
         </View>
         <View style={tw`flex-1 flex flex-row items-center justify-end`}>
           <View style={tw`w-4 h-4 rounded-full ${iotStatusStyle[marker.status].style}`} />
