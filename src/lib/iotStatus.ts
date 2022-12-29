@@ -5,12 +5,18 @@ import bike_error from '../assets/bike_error.png'
 import rangeout from '../assets/range_out.png'
 import directed from '../assets/directed.png'
 import report from '../assets/reported.png'
+import home from '../assets/home.png'
 
 export const iotStatusStyle: any = {
   [IotStatus.STAND_BY]: {
     style: 'bg-green-500',
     status: '대기',
     marker: standBy,
+  },
+  [IotStatus.IN_USE]: {
+    style: 'bg-black',
+    status: '사용',
+    marker: home,
   },
   [IotStatus.BIKE_ERROR]: {
     style: 'bg-orange-400',

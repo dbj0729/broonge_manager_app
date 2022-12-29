@@ -5,6 +5,7 @@ export enum IotStatus {
   RANGEOUT = 'range_out',
   DIRECTED = 'directed',
   REPORT = 'report',
+  IN_USE = 'in-use',
 }
 
 export interface Iot {
