@@ -28,7 +28,7 @@ const IotController = ({
     const params = {
       // host: '192.168.0.57',
       host: 'broonge.co.kr',
-      port: 9090,
+      port: 8000,
       negotiationMandatory: false,
     }
 
