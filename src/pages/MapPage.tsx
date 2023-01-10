@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Image, Pressable, View } from 'react-native'
 import NaverMapView from 'react-native-nmap'
 import IotController from '../components/IotController'
@@ -9,6 +9,7 @@ import axios from 'axios'
 import useCurrentLocation from '../hooks/useCurrentLocation'
 import MarkersComponent from '../components/MarkersComponent'
 import { Iot } from '../types/iotStatus'
+import { useAppSelector } from '../store'
 export interface OnCameraChangedEvent {
   latitude: number
   longitude: number
@@ -23,11 +24,12 @@ export interface Coord {
 }
 
 const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
-  const mapRef = useRef(null)
+  useCurrentLocation()
+  const mapRef = useRef<NaverMapView>(null)
   const [markers, setMarkers] = useState<Iot[]>([])
   const [targetMarker, setTargetMarker] = useState<Iot>()
   const [isLocked, setIsLocked] = useState('')
-  const currentLocation = useCurrentLocation()
+  const currentLocation = useAppSelector(s => s.user.coord)
   const [coverRegion, setCoverRegion] = useState<Coord[]>([])
 
   const handleCameraChanged = useCallback(async (e: OnCameraChangedEvent) => {
@@ -41,6 +43,10 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
   }, [])
 
   const goBack = () => navigation.goBack()
+
+  useEffect(() => {
+    if (currentLocation && mapRef.current) mapRef.current.setLocationTrackingMode(2)
+  }, [currentLocation])
 
   return (
     <View style={tw`relative w-full h-full`}>
@@ -61,7 +67,7 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
         ref={mapRef}
         style={tw`flex-1`}
         onCameraChange={handleCameraChanged}
-        showsMyLocationButton={true}
+        showsMyLocationButton={false}
         useTextureView={true}
         center={{ ...currentLocation, zoom: 16 }}>
         <MarkersComponent
