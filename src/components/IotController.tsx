@@ -5,17 +5,27 @@ import { iotStatusStyle } from '../lib/iotStatus'
 import Telnet from 'react-native-telnet-client'
 import { Iot } from '../types/iotStatus'
 import axios from 'axios'
+import { Coord } from '../pages/MapPage'
+
+interface Props {
+  marker: Iot | undefined
+  setTargetMarker: Dispatch<SetStateAction<Iot | undefined>>
+  isLocked: string
+  setIsLocked: React.Dispatch<SetStateAction<string>>
+  setMarkers: React.Dispatch<SetStateAction<Iot[]>>
+  coverRegion: Coord[]
+}
 
 const IotController = ({
   marker,
   setTargetMarker,
-}: {
-  marker: Iot | undefined
-  setTargetMarker: Dispatch<SetStateAction<Iot | undefined>>
-}) => {
+  isLocked,
+  setIsLocked,
+  coverRegion,
+  setMarkers,
+}: Props) => {
   const [loading, setLoading] = useState(false)
   const [isPressLockBtn, setIsPressLockBtn] = useState(false)
-  const [isLocked, setIsLocked] = useState('')
   const [count, setCount] = useState(10)
 
   const updateBikeStatus = async (order: string) => {
@@ -40,7 +50,15 @@ const IotController = ({
     }
 
     const res = await connection.send(`a001,${marker?.bike_id},${order}`)
-    console.log(res)
+
+    if (res) {
+      try {
+        const res2 = await axios.post<{ result: Iot[] }>('/iot/map', { region: coverRegion })
+        setMarkers(res2.data.result)
+      } catch (error) {
+        console.log(error)
+      }
+    }
 
     await connection.end()
   }
@@ -71,7 +89,7 @@ const IotController = ({
       }, 1000)
       return () => clearTimeout(timer)
     }
-  }, [count, isPressLockBtn, loading, marker?.bike_id])
+  }, [count, isPressLockBtn, loading, marker?.bike_id, setIsLocked])
 
   if (!marker) return null
 
@@ -140,10 +158,20 @@ const IotController = ({
       <View style={tw`px-5 py-2`}>
         <View style={tw`flex-1 flex-row items-center`}>
           <Pressable
-            onPress={() => updateBikeStatus('unlock')}
+            onPress={() =>
+              isLocked === 'YES'
+                ? updateBikeStatus('unlock')
+                : console.log('이미 잠금이 풀린 자전거입니다.')
+            }
             disabled={loading}
-            style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md`}>
-            {!loading && <Text>{isLocked === 'NO' ? '해제완료' : '해제'}</Text>}
+            style={tw`flex-1 py-3  mx-1 items-center justify-center border rounded-md ${
+              isLocked === 'NO' ? 'bg-gray-400 border-gray-400' : ''
+            }`}>
+            {!loading && (
+              <Text style={tw`${isLocked === 'NO' ? 'text-gray-200' : ''}`}>
+                {isLocked === 'NO' ? '해제완료' : '해제'}
+              </Text>
+            )}
             {/* {unLockLoading && <ActivityIndicator animating={unLockLoading} color="#222" />} */}
             {loading && <Text style={tw``}>{count}</Text>}
           </Pressable>

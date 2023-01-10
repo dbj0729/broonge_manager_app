@@ -9,7 +9,7 @@ import axios from 'axios'
 import useCurrentLocation from '../hooks/useCurrentLocation'
 import MarkersComponent from '../components/MarkersComponent'
 import { Iot } from '../types/iotStatus'
-interface OnCameraChangedEvent {
+export interface OnCameraChangedEvent {
   latitude: number
   longitude: number
   zoom: number
@@ -26,10 +26,13 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
   const mapRef = useRef(null)
   const [markers, setMarkers] = useState<Iot[]>([])
   const [targetMarker, setTargetMarker] = useState<Iot>()
+  const [isLocked, setIsLocked] = useState('')
   const currentLocation = useCurrentLocation()
+  const [coverRegion, setCoverRegion] = useState<Coord[]>([])
 
   const handleCameraChanged = useCallback(async (e: OnCameraChangedEvent) => {
     try {
+      setCoverRegion(e.coveringRegion)
       const res = await axios.post<{ result: Iot[] }>('/iot/map', { region: e.coveringRegion })
       setMarkers(res.data.result)
     } catch (error) {
@@ -59,10 +62,22 @@ const MapPage = ({ navigation }: AppStackProps<'Map'>) => {
         style={tw`flex-1`}
         onCameraChange={handleCameraChanged}
         showsMyLocationButton={true}
+        useTextureView={true}
         center={{ ...currentLocation, zoom: 16 }}>
-        <MarkersComponent markers={markers} setTargetMarker={setTargetMarker} />
+        <MarkersComponent
+          markers={markers}
+          setTargetMarker={setTargetMarker}
+          setIsLocked={setIsLocked}
+        />
       </NaverMapView>
-      <IotController setTargetMarker={setTargetMarker} marker={targetMarker} />
+      <IotController
+        setTargetMarker={setTargetMarker}
+        marker={targetMarker}
+        isLocked={isLocked}
+        setIsLocked={setIsLocked}
+        setMarkers={setMarkers}
+        coverRegion={coverRegion}
+      />
     </View>
   )
 }

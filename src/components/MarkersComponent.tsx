@@ -4,13 +4,25 @@ import { Iot } from '../types/iotStatus'
 import { Marker } from 'react-native-nmap'
 import { iotStatusStyle } from '../lib/iotStatus'
 import tw from '../lib/tailwind'
+import axios from 'axios'
 
 interface Props {
   markers: Iot[]
   setTargetMarker: React.Dispatch<SetStateAction<Iot | undefined>>
+  setIsLocked: React.Dispatch<SetStateAction<string>>
 }
 
-export default function MarkersComponent({ markers, setTargetMarker }: Props) {
+export default function MarkersComponent({ markers, setTargetMarker, setIsLocked }: Props) {
+  const handleMarkerClick = async (marker: Iot) => {
+    try {
+      const res = await axios.get<Iot>(`/iot/lock/${marker.bike_id}`)
+      setIsLocked(res.data.is_locked)
+      setTargetMarker(marker)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <>
       {markers.map(marker => (
@@ -20,7 +32,7 @@ export default function MarkersComponent({ markers, setTargetMarker }: Props) {
           width={60}
           height={60}
           // image={require('../assets/reported.png')}
-          onClick={() => setTargetMarker(marker)}>
+          onClick={() => handleMarkerClick(marker)}>
           <View style={tw`relative`}>
             <Image
               style={tw`w-10`}

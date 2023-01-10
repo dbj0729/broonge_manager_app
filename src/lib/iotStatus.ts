@@ -5,7 +5,7 @@ import bike_error from '../assets/bike_error.png'
 import rangeout from '../assets/range_out.png'
 import directed from '../assets/directed.png'
 import report from '../assets/reported.png'
-import home from '../assets/home.png'
+import ridingBike from '../assets/ridingBike.png'
 
 export const iotStatusStyle: any = {
   [IotStatus.STAND_BY]: {
@@ -16,7 +16,7 @@ export const iotStatusStyle: any = {
   [IotStatus.IN_USE]: {
     style: 'bg-black',
     status: '사용',
-    marker: home,
+    marker: ridingBike,
   },
   [IotStatus.BIKE_ERROR]: {
     style: 'bg-orange-400',
